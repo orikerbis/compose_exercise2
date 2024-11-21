@@ -42,8 +42,8 @@ jobs:
        #   docker compose up -d
         #  sleep 10  # Wait for services to initialize
 
-      #- name: Test Application Locally
-       # run: |
+      #- name: Test Application Locall
+       # run: 
         #  echo "Testing frontend..."
          # curl -f http://localhost:3001 || exit 1
 
