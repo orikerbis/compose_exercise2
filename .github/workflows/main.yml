@@ -24,7 +24,7 @@ jobs:
       # Step 2: Log in to Amazon EC
       - name: Log in to Amazon ECR
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 825765414083.dkr.ecr.us-east-1.amazonaws.com
+              aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/v1p4v3h9
 
         
       - name: Set up Docker Buildx
