@@ -68,15 +68,15 @@ jobs:
           export ECR_REGISTRY=${{ secrets.ECR_REGISTRY }}
 
           # Tag and push frontend
-          docker tag $ECR_REGISTRY/frontend_image:latest
-          docker push $ECR_REGISTRY
+          docker tag frontend:latest $ECR_REGISTRY/frontend:latest
+          docker push $ECR_REGISTRY/frontend:latest
 
           # Tag and push backend
-          docker tag $ECR_REGISTRY/backend:latest
+          docker tag backend:latest $ECR_REGISTRY/backend:latest
           docker push $ECR_REGISTRY/backend:latest
 
           # Tag and push db
-          docker tag $ECR_REGISTRY/db:latest
+          docker tag db:latest $ECR_REGISTRY/db:latest
           docker push $ECR_REGISTRY/db:latest
 
       # Step 6: Deploy to EC2 Instance
