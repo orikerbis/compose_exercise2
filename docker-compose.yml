@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
-    image: ${ECR_REGISTRY}/frontend:latest
+    image: frontend_image
     container_name: frontend
     ports:
       - "3001:80"
@@ -14,7 +14,7 @@ services:
 
   backend:
     build: ./backend
-    image: ${ECR_REGISTRY}/backend:latest
+    image: backend_image
     container_name: backend
     ports:
       - "3000:3000"
@@ -33,7 +33,7 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-    image: ${ECR_REGISTRY}/db:latest
+    image: db_image
     container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: password

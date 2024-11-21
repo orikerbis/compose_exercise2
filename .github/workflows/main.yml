@@ -65,8 +65,8 @@ jobs:
           export ECR_REGISTRY=${{ secrets.ECR_REGISTRY }}
 
           # Tag and push frontend
-          docker tag frontend:latest $ECR_REGISTRY/frontend:latest
-          docker push $ECR_REGISTRY/frontend:latest
+          docker tag frontend_image $ECR_REGISTRY/frontend_image:latest
+          docker push $ECR_REGISTRY/frontend_image:latest
 
           # Tag and push backend
           docker tag backend:latest $ECR_REGISTRY/backend:latest
