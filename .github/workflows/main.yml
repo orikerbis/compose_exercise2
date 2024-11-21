@@ -55,30 +55,14 @@ jobs:
      #    docker compose down
 
       # Step 5: Tag and Push Docker Images to ECR
-      - name: Build Docker Images
+      - name: Build and Push Docker Compose Images
         env:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
         run: |
+          docker buildx create --use
           docker compose build
-
-      - name: Tag and Push Docker Images
-        env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-        run: |
-          export ECR_REGISTRY=${{ secrets.ECR_REGISTRY }}
-
-          # Tag and push frontend
-          docker tag hw1-frontend:latest $ECR_REGISTRY/hw1-frontend:latest
-          docker push $ECR_REGISTRY/hw1-frontend:latest
-
-          # Tag and push backend
-          docker tag hw1-backend:latest $ECR_REGISTRY/hw1-backend:latest
-          docker push $ECR_REGISTRY/hw1-backend:latest
-
-          # Tag and push db
-          docker tag hw1-db:latest $ECR_REGISTRY/hw1-db:latest
-          docker push $ECR_REGISTRY/hw1-db:latest
-
+          docker compose push
+      
       # Step 6: Deploy to EC2 Instance
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.5
