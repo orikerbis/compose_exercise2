@@ -3,9 +3,10 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
+    image: ${ECR_REGISTRY}/frontend:latest
     container_name: frontend
     ports:
-      - "3001:80" 
+      - "3001:80"
     networks:
       - app_network
     depends_on:
@@ -13,9 +14,10 @@ services:
 
   backend:
     build: ./backend
+    image: ${ECR_REGISTRY}/backend:latest
     container_name: backend
     ports:
-      - "3000:3000" 
+      - "3000:3000"
     networks:
       - app_network
     environment:
@@ -28,17 +30,18 @@ services:
         condition: service_healthy
 
   db:
-    image: mysql:latest
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    image: ${ECR_REGISTRY}/db:latest
     container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: mydb
     ports:
-      - "3306:3306" 
+      - "3306:3306"
     networks:
       - app_network
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck: 
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -49,6 +52,3 @@ services:
 networks:
   app_network:
     driver: bridge
-
-volumes:
-  db_data:
