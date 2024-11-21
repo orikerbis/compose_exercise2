@@ -53,6 +53,8 @@ jobs:
 
       # Step 5: Tag and Push Docker Images to ECR
       - name: Build Docker Images
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
         run: |
           docker compose build
 
