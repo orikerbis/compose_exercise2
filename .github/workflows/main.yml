@@ -52,7 +52,11 @@ jobs:
      #    docker compose down
 
       # Step 5: Tag and Push Docker Images to ECR
-      - name: Build and Push Docker Images
+      - name: Build Docker Images
+        run: |
+          docker compose build
+
+      - name: Tag and Push Docker Images
         env:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
         run: |
