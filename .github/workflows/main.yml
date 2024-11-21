@@ -57,24 +57,25 @@ jobs:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
         run: |
           docker compose build
+          docker compose push
 
-      - name: Tag and Push Docker Images
-        env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-        run: |
-          export ECR_REGISTRY=${{ secrets.ECR_REGISTRY }}
+      # - name: Tag and Push Docker Images
+      #   env:
+      #     ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      #   run: |
+      #     export ECR_REGISTRY=${{ secrets.ECR_REGISTRY }}
 
-          # Tag and push frontend
-          docker tag frontend_image $ECR_REGISTRY/frontend_image:latest
-          docker push $ECR_REGISTRY
+      #     # Tag and push frontend
+      #     docker tag frontend_image $ECR_REGISTRY/frontend_image:latest
+      #     docker push $ECR_REGISTRY
 
-          # Tag and push backend
-          docker tag backend:latest $ECR_REGISTRY/backend:latest
-          docker push $ECR_REGISTRY/backend:latest
+      #     # Tag and push backend
+      #     docker tag backend:latest $ECR_REGISTRY/backend:latest
+      #     docker push $ECR_REGISTRY/backend:latest
 
-          # Tag and push db
-          docker tag db:latest $ECR_REGISTRY/db:latest
-          docker push $ECR_REGISTRY/db:latest
+      #     # Tag and push db
+      #     docker tag db:latest $ECR_REGISTRY/db:latest
+      #     docker push $ECR_REGISTRY/db:latest
 
       # Step 6: Deploy to EC2 Instance
       - name: Deploy to EC2
