@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
-    image: ${ECR_REGISTRY}/frontend:latest
+    image: ${ECR_REGISTRY}/my-ecr:frontend
     container_name: frontend
     ports:
       - "3001:80"
@@ -14,7 +14,7 @@ services:
 
   backend:
     build: ./backend
-    image: ${ECR_REGISTRY}/backend:latest
+    image: ${ECR_REGISTRY}/my-ecr:backend
     container_name: backend
     ports:
       - "3000:3000"
@@ -33,7 +33,7 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-    image: ${ECR_REGISTRY}/db:latest
+    image: ${ECR_REGISTRY}/my-ecr:db
     container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -42,7 +42,7 @@ services:
       - "3306:3306"
     networks:
       - app_network
-    healthcheck: 
+    healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
