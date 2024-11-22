@@ -24,45 +24,54 @@ jobs:
       # Step 2: Log in to Amazon EC
       - name: Log in to Amazon ECR
         run: |
-              aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/v1p4v3h9
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/v1p4v3h9
 
-        
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
       # Step 3: Build Docker Images for Testing
-     # - name: Build Docker Images for Testing
+      # - name: Build Docker Images for Testing
       #  run: |
-       #   docker compose build
+      #   docker compose build
 
       # Step 4: Run Tests on Local Containers
-     # - name: Start Local Containers for Testing
+      # - name: Start Local Containers for Testing
       #  run: |
-       #   docker compose up -d
-        #  sleep 10  # Wait for services to initialize
+      #   docker compose up -d
+      #  sleep 10  # Wait for services to initialize
 
       #- name: Test Application Locall
-       # run: 
-        #  echo "Testing frontend..."
-         # curl -f http://localhost:3001 || exit 1
+      # run:
+      #  echo "Testing frontend..."
+      # curl -f http://localhost:3001 || exit 1
 
-        #  echo "Testing backend..."
-         # curl -f http://localhost:3000 || exit 1
+      #  echo "Testing backend..."
+      # curl -f http://localhost:3000 || exit 1
 
-   #   - name: Stop and Clean Up Local Containers
-    #    run: |
-     #    docker compose down
+      #   - name: Stop and Clean Up Local Containers
+      #    run: |
+      #    docker compose down
 
       # Step 5: Tag and Push Docker Images to ECR
-      - name: Build and Push Docker Compose Images
-        env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-          ACTIONS_STEP_DEBUG: "true"
-        run: |
-          docker buildx create --use
-          docker compose build
-          docker compose push
-      
+      # - name: Build and Push Docker Compose Images
+      #   env:
+      #     ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      #     ACTIONS_STEP_DEBUG: "true"
+      #   run: |
+      #     docker buildx create --use
+      #     docker compose build
+      #     docker compose push
+
+      - uses: vitr/actions-build-and-upload-to-ecs@master
+        with:
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          repo: my-ecr
+          region: us-east-1
+          tags: latest,${{ github.sha }}
+          create_repo: true
+
       # Step 6: Deploy to EC2 Instance
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.5
