@@ -24,7 +24,7 @@ jobs:
       # Step 2: Log in to Amazon EC
       - name: Log in to Amazon ECR
         run: |
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/v1p4v3h9
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 825765414083.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -52,25 +52,17 @@ jobs:
       #    run: |
       #    docker compose down
 
-      # Step 5: Tag and Push Docker Images to ECR
-      # - name: Build and Push Docker Compose Images
-      #   env:
-      #     ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-      #     ACTIONS_STEP_DEBUG: "true"
-      #   run: |
-      #     docker buildx create --use
-      #     docker compose build
-      #     docker compose push
+       
+      - name: Build and Push Docker Compose Images
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ACTIONS_STEP_DEBUG: "true"
+        run: |
+          docker buildx create --use
+          docker compose build
+          docker compose push
 
-      - uses: vitr/actions-build-and-upload-to-ecs@master
-        with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: my-ecr
-          region: us-east-1
-          tags: latest,${{ github.sha }}
-          create_repo: true
+    
 
       # Step 6: Deploy to EC2 Instance
       - name: Deploy to EC2
